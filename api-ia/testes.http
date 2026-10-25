@@ -1,0 +1,36 @@
+@base = https://api-ia-rouge.vercel.app
+
+### Saúde da API
+GET {{base}}/saude
+
+### Pergunta que o guia responde
+POST {{base}}/perguntar
+Content-Type: application/json
+
+{
+  "pergunta": "Qual a frequencia minima para aprovacao em uma disciplina?"
+}
+
+### Pergunta que o guia não responde
+POST {{base}}/perguntar
+Content-Type: application/json
+
+{
+  "pergunta": "Qual é a receita de bolo de cenoura do restaurante universitário?"
+}
+
+### Pergunta vazia (deve dar 400)
+POST {{base}}/perguntar
+Content-Type: application/json
+
+{
+  "pergunta": "   "
+}
+
+### Pergunta com mais de 500 caracteres (deve dar 400)
+POST {{base}}/perguntar
+Content-Type: application/json
+
+{
+  "pergunta": "Quero saber tudo sobre a matrícula, o trancamento, o cancelamento, o aproveitamento de disciplinas, a mobilidade acadêmica, as bolsas de permanência, o auxílio moradia, o auxílio alimentação, o restaurante universitário, a biblioteca, o calendário acadêmico, as atividades formativas, o estágio obrigatório e não obrigatório, o trabalho de conclusão de curso, a colação de grau, a emissão de diploma, a jubilação, a reintegração, a transferência entre cursos e entre campi, e também sobre o que acontece se eu reprovar várias vezes."
+}

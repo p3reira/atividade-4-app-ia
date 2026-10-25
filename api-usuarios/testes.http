@@ -1,0 +1,74 @@
+@baseUrl = http://localhost:3000/api/usuarios
+
+### 1. Cadastrar (rota aberta) — esperado: 201
+# @name cadastro
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "nome": "Ana",
+  "sobrenome": "Souza",
+  "email": "ana.souza@email.com",
+  "usuario": "ana.souza",
+  "senha": "senha123"
+}
+
+### 2. Login (rota aberta) — esperado: 200, com dados.token
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "login": "ana.souza",
+  "senha": "senha123"
+}
+
+### 3. Listar SEM token — esperado: 401
+GET {{baseUrl}}
+
+### 4. Listar COM token — esperado: 200
+GET {{baseUrl}}
+Authorization: Bearer {{login.response.body.$.dados.token}}
+
+### 5. Buscar por id — esperado: 200
+GET {{baseUrl}}/{{login.response.body.$.dados.usuario.id}}
+Authorization: Bearer {{login.response.body.$.dados.token}}
+
+### 6. Alterar — esperado: 200 (só muda os campos enviados)
+PUT {{baseUrl}}/{{login.response.body.$.dados.usuario.id}}
+Authorization: Bearer {{login.response.body.$.dados.token}}
+Content-Type: application/json
+
+{
+  "sobrenome": "Souza Lima",
+  "senha": "novaSenha456"
+}
+
+### 7. Excluir — esperado: 200
+DELETE {{baseUrl}}/{{login.response.body.$.dados.usuario.id}}
+Authorization: Bearer {{login.response.body.$.dados.token}}
+
+
+### 8. Cadastrar um segundo usuário
+# @name outro
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "nome": "Bruno",
+  "sobrenome": "Lima",
+  "email": "bruno.lima@email.com",
+  "usuario": "bruno.lima",
+  "senha": "senha123"
+}
+
+### 9. Ana tenta alterar o Bruno — esperado: 403
+PUT {{baseUrl}}/{{outro.response.body.$.dados.id}}
+Authorization: Bearer {{login.response.body.$.dados.token}}
+Content-Type: application/json
+
+{ "nome": "Hackeado" }
+
+### 10. Ana tenta excluir o Bruno — esperado: 403
+DELETE {{baseUrl}}/{{outro.response.body.$.dados.id}}
+Authorization: Bearer {{login.response.body.$.dados.token}}

@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.local
+.env*.local
+.vercel
+!.env.exemplo
+
+# cópia local do PROMPTS e configuração do editor (não são do projeto)
+PROMPTS-copia.md
+.claude/
